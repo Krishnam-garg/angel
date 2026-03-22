@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🛒 DhokaKart™ — Angel Ji Ka Rishta Bazaar 😇🐒</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Kalam:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pk:#ff1493;--gold:#ffd700;--red:#e53935;--grn:#00c853;
+  --pur:#7c4dff;--org:#ff6d00;--blu:#1565c0;--bg:#f5f5f5;
+  --flip:#2874f0;--amz:#ff9900;--white:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Baloo 2',cursive;background:var(--bg);cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='26'%3E🛒%3C/text%3E%3C/svg%3E"),auto;}
+
+/* ── FLOATIES ── */
+.floaties{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.floaty{position:absolute;animation:floatUp linear infinite;opacity:0.25;}
+@keyframes floatUp{0%{transform:translateY(110vh) rotate(0deg);opacity:.25;}100%{transform:translateY(-10vh) rotate(360deg);opacity:0;}}
+
+/* ── TOP NAV BAR (DhokaKart style) ── */
+.topbar{
+  position:fixed;top:0;left:0;width:100%;z-index:200;
+  background:linear-gradient(90deg,#1a237e,var(--flip));
+  display:flex;flex-direction:column;
+}
+.topbar-row1{
+  display:flex;align-items:center;gap:8px;padding:6px 12px;
+  flex-wrap:wrap;
+}
+.logo{
+  font-family:'Press Start 2P',monospace;font-size:clamp(.55rem,1.8vw,.9rem);
+  color:var(--gold);text-shadow:2px 2px 0 #000;white-space:nowrap;
+}
+.logo span{color:var(--pk);}
+.search-bar{
+  flex:1;display:flex;min-width:140px;max-width:420px;
+  border:3px solid var(--gold);border-radius:4px;overflow:hidden;
+}
+.search-bar input{
+  flex:1;padding:5px 10px;font-family:'Kalam',cursive;font-size:.85rem;border:none;outline:none;
+}
+.search-bar button{
+  background:var(--gold);border:none;padding:5px 12px;
+  font-size:1rem;cursor:pointer;font-weight:700;
+}
+.topbar-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.tbadge{
+  background:var(--red);color:#fff;font-size:.55rem;
+  font-family:'Press Start 2P',monospace;padding:4px 8px;border-radius:20px;
+  animation:pulse .8s infinite;white-space:nowrap;
+}
+.tbadge.grn{background:var(--grn);color:#000;}
+.tbadge.gold{background:var(--gold);color:#000;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+
+/* ticker */
+.ticker-wrap{background:var(--gold);overflow:hidden;height:22px;display:flex;align-items:center;}
+.ticker-inner{
+  display:inline-block;white-space:nowrap;
+  font-family:'Press Start 2P',monospace;font-size:.5rem;color:#8b0000;
+  animation:tickScroll 18s linear infinite;
+}
+@keyframes tickScroll{from{transform:translateX(100vw);}to{transform:translateX(-100%);}}
+
+/* ── SLIDES ── */
+.slides-wrapper{position:relative;z-index:10;width:100vw;height:100vh;overflow:hidden;}
+.slide{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;padding-top:80px;padding-bottom:70px;
+  text-align:center;opacity:0;transform:translateX(100%);
+  transition:all .45s cubic-bezier(.68,-.55,.27,1.55);pointer-events:none;
+  overflow-y:auto;
+}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.exit-left{opacity:0;transform:translateX(-100%);}
+
+/* ── SLIDE 1: Product Listing ── */
+#slide1{background:linear-gradient(160deg,#e3f2fd,#bbdefb,#e8eaf6);}
+.product-page{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  max-width:560px;width:100%;
+}
+.breadcrumb{
+  font-family:'Kalam',cursive;font-size:.8rem;color:#555;
+  align-self:flex-start;
+}
+.product-card{
+  background:#fff;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,.15);
+  width:100%;padding:18px;position:relative;border:2px solid #e0e0e0;
+}
+.oos-ribbon{
+  position:absolute;top:12px;left:-8px;
+  background:var(--red);color:#fff;font-family:'Press Start 2P',monospace;
+  font-size:.45rem;padding:5px 12px;border-radius:0 4px 4px 0;
+  box-shadow:2px 2px 0 #000;
+}
+.oos-ribbon::before{content:'';position:absolute;bottom:-6px;left:0;
+  border:3px solid transparent;border-top-color:#8b0000;border-right-color:#8b0000;}
+.prod-img-area{font-size:6rem;animation:wobble 1.2s infinite;line-height:1;}
+@keyframes wobble{0%,100%{transform:rotate(-5deg) scale(1);}50%{transform:rotate(5deg) scale(1.05);}}
+.prod-title{
+  font-family:'Kalam',cursive;font-size:clamp(1.1rem,3vw,1.6rem);
+  color:#111;font-weight:700;margin:6px 0 3px;
+}
+.prod-subtitle{font-family:'Kalam',cursive;font-size:.9rem;color:#555;}
+.stars{color:var(--gold);font-size:1.1rem;letter-spacing:2px;}
+.rating-count{font-size:.75rem;color:var(--blu);font-family:'Kalam',cursive;}
+.price-area{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;justify-content:center;margin:8px 0;}
+.price-main{font-family:'Press Start 2P',monospace;font-size:clamp(.9rem,2.5vw,1.3rem);color:var(--red);}
+.price-og{font-size:.85rem;color:#999;text-decoration:line-through;font-family:'Kalam',cursive;}
+.discount-tag{
+  background:var(--grn);color:#fff;font-size:.6rem;
+  font-family:'Press Start 2P',monospace;padding:3px 8px;border-radius:4px;
+}
+.offer-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0;}
+.offer-badge{
+  background:#fff3e0;border:1.5px solid var(--org);color:var(--org);
+  font-size:.65rem;font-family:'Press Start 2P',monospace;padding:3px 8px;border-radius:4px;
+}
+.add-cart-btn{
+  background:linear-gradient(135deg,var(--amz,#ff9900),#e65c00);
+  color:#fff;border:none;border-radius:6px;padding:12px 30px;
+  font-family:'Press Start 2P',monospace;font-size:clamp(.45rem,1.5vw,.7rem);
+  cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.25);
+  transition:transform .1s;margin:4px;
+  animation:btnGlow 1s infinite alternate;
+}
+@keyframes btnGlow{from{box-shadow:0 4px 10px rgba(255,153,0,.4);}to{box-shadow:0 4px 25px rgba(255,153,0,.9);}}
+.add-cart-btn:hover{transform:translateY(-2px);}
+.buy-now-btn{
+  background:linear-gradient(135deg,var(--flip),#0d47a1);
+  color:#fff;border:none;border-radius:6px;padding:12px 30px;
+  font-family:'Press Start 2P',monospace;font-size:clamp(.45rem,1.5vw,.7rem);
+  cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.25);
+  transition:transform .1s;margin:4px;
+}
+.buy-now-btn:hover{transform:translateY(-2px);}
+.delivery-info{
+  font-family:'Kalam',cursive;font-size:.8rem;color:#388e3c;
+  background:#e8f5e9;padding:6px 12px;border-radius:6px;width:100%;
+}
+.no-return{
+  font-family:'Kalam',cursive;font-size:.75rem;color:var(--red);
+  background:#ffebee;padding:6px 12px;border-radius:6px;width:100%;
+  border:1.5px dashed var(--red);
+}
+
+/* ── SLIDE 2: Specs ── */
+#slide2{background:linear-gradient(160deg,#fff8e1,#fff3e0,#fce4ec);}
+.specs-container{max-width:560px;width:100%;}
+.spec-heading{
+  font-family:'Press Start 2P',monospace;font-size:clamp(.5rem,1.8vw,.8rem);
+  color:#4a148c;margin-bottom:12px;
+  background:linear-gradient(90deg,var(--pur),var(--pk));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.spec-table{width:100%;border-collapse:collapse;background:#fff;
+  border-radius:10px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.1);}
+.spec-table tr:nth-child(even){background:#f8f8f8;}
+.spec-table td{
+  padding:9px 12px;font-family:'Kalam',cursive;
+  font-size:clamp(.75rem,2vw,.95rem);border-bottom:1px solid #eee;
+  text-align:left;vertical-align:top;
+}
+.spec-table td:first-child{
+  font-weight:700;color:#555;width:40%;
+  border-right:2px solid #eee;white-space:nowrap;
+}
+.spec-table td:last-child{color:#222;}
+.warning-chip{
+  display:inline-block;background:var(--red);color:#fff;
+  font-size:.6rem;font-family:'Press Start 2P',monospace;
+  padding:2px 6px;border-radius:4px;margin-left:4px;vertical-align:middle;
+}
+.spec-footer{
+  margin-top:10px;font-family:'Kalam',cursive;font-size:.8rem;
+  color:#666;font-style:italic;background:#fff;padding:8px 12px;
+  border-radius:8px;border:1.5px dashed #ccc;
+}
+
+/* ── SLIDE 3: Features / Qualities ── */
+#slide3{background:linear-gradient(160deg,#e8f5e9,#f3e5f5,#e3f2fd);}
+.feature-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  max-width:560px;width:100%;
+}
+.feature-card{
+  background:#fff;border-radius:12px;padding:12px;
+  box-shadow:0 3px 12px rgba(0,0,0,.1);
+  border-top:4px solid var(--pk);
+  text-align:left;position:relative;overflow:hidden;
+}
+.feature-card:nth-child(2){border-top-color:var(--org);}
+.feature-card:nth-child(3){border-top-color:var(--grn);}
+.feature-card:nth-child(4){border-top-color:var(--pur);}
+.feature-card:nth-child(5){border-top-color:var(--red);}
+.feature-card:nth-child(6){border-top-color:var(--blu);}
+.feature-icon{font-size:2rem;display:block;margin-bottom:4px;}
+.feature-name{
+  font-family:'Press Start 2P',monospace;font-size:.45rem;
+  color:#333;margin-bottom:4px;
+}
+.feature-desc{font-family:'Kalam',cursive;font-size:.8rem;color:#555;}
+.feature-badge{
+  position:absolute;top:8px;right:8px;
+  background:var(--grn);color:#fff;font-size:.5rem;
+  font-family:'Press Start 2P',monospace;padding:2px 5px;border-radius:4px;
+}
+.feature-badge.bug{background:var(--red);}
+.feature-badge.warn{background:var(--org);}
+
+/* ── SLIDE 4: Weird Habits / Animal Mode ── */
+#slide4{background:linear-gradient(160deg,#1a237e,#283593,#4a148c);}
+.habits-wrapper{max-width:560px;width:100%;}
+.habit-heading{
+  font-family:'Press Start 2P',monospace;font-size:clamp(.5rem,1.8vw,.8rem);
+  color:var(--gold);margin-bottom:12px;text-shadow:2px 2px 0 #000;
+}
+.animal-mode-banner{
+  background:linear-gradient(90deg,#ff6f00,#e53935);
+  color:#fff;font-family:'Press Start 2P',monospace;
+  font-size:clamp(.45rem,1.5vw,.7rem);padding:8px 14px;
+  border-radius:8px;margin-bottom:10px;
+  animation:flash .6s infinite alternate;
+  box-shadow:0 0 20px rgba(255,0,0,.5);
+}
+@keyframes flash{from{opacity:1;}to{opacity:.6;}}
+.habit-list{display:flex;flex-direction:column;gap:8px;}
+.habit-item{
+  background:rgba(255,255,255,.08);backdrop-filter:blur(10px);
+  border:1.5px solid rgba(255,255,255,.2);border-radius:10px;
+  padding:10px 14px;display:flex;align-items:flex-start;gap:10px;
+  text-align:left;
+}
+.habit-item .hi{font-size:1.8rem;flex-shrink:0;}
+.habit-item .ht{
+  font-family:'Kalam',cursive;font-size:clamp(.8rem,2vw,.95rem);color:#fff;
+}
+.habit-item .ht strong{color:var(--gold);}
+.sound-board{
+  background:rgba(255,255,255,.05);border:2px dashed rgba(255,255,255,.3);
+  border-radius:10px;padding:12px;margin-top:10px;
+}
+.sound-title{
+  font-family:'Press Start 2P',monospace;font-size:.55rem;
+  color:var(--gold);margin-bottom:8px;
+}
+.sound-btns{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
+.sound-btn{
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.4);
+  color:#fff;border-radius:20px;padding:6px 14px;
+  font-family:'Kalam',cursive;font-size:.85rem;cursor:pointer;
+  transition:all .2s;
+}
+.sound-btn:hover{background:rgba(255,215,0,.3);border-color:var(--gold);transform:scale(1.1);}
+
+/* ── SLIDE 5: Reviews / Memes ── */
+#slide5{background:linear-gradient(160deg,#212121,#311b92,#1a237e);}
+.reviews-wrapper{max-width:560px;width:100%;}
+.reviews-heading{
+  font-family:'Press Start 2P',monospace;font-size:clamp(.5rem,1.8vw,.75rem);
+  color:var(--gold);margin-bottom:12px;text-shadow:2px 2px 0 #000;
+}
+.review-card{
+  background:rgba(255,255,255,.07);backdrop-filter:blur(8px);
+  border:1.5px solid rgba(255,255,255,.15);border-radius:12px;
+  padding:12px 14px;margin-bottom:8px;text-align:left;
+}
+.reviewer{
+  display:flex;align-items:center;gap:8px;margin-bottom:6px;
+}
+.reviewer-avatar{font-size:1.8rem;}
+.reviewer-name{
+  font-family:'Press Start 2P',monospace;font-size:.5rem;color:#fff;
+}
+.reviewer-stars{color:var(--gold);font-size:.9rem;}
+.review-text{
+  font-family:'Kalam',cursive;font-size:.9rem;color:rgba(255,255,255,.85);
+  line-height:1.4;
+}
+.review-helpful{
+  font-family:'Kalam',cursive;font-size:.7rem;color:rgba(255,255,255,.4);
+  margin-top:4px;
+}
+.meme-strip{
+  display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center;
+}
+.meme-card{
+  background:#1e1e1e;border:2px solid var(--grn);border-radius:10px;
+  padding:10px;flex:1;min-width:140px;box-shadow:0 0 12px rgba(0,255,0,.2);
+}
+.meme-top{
+  font-family:'Press Start 2P',monospace;font-size:.45rem;
+  color:#fff;margin-bottom:6px;
+}
+.meme-emoji{font-size:2.5rem;display:block;margin:4px 0;animation:shake .4s infinite;}
+@keyframes shake{0%,100%{transform:rotate(0);}25%{transform:rotate(-8deg);}75%{transform:rotate(8deg);}}
+.meme-bottom{
+  font-family:'Press Start 2P',monospace;font-size:.45rem;
+  color:var(--gold);
+}
+
+/* ── SLIDE 6: T&C / Warnings ── */
+#slide6{background:linear-gradient(160deg,#b71c1c,#880e4f,#4a148c);}
+.tnc-wrapper{max-width:560px;width:100%;}
+.tnc-heading{
+  font-family:'Press Start 2P',monospace;font-size:clamp(.5rem,1.8vw,.8rem);
+  color:#fff;margin-bottom:12px;text-shadow:2px 2px 0 #000;
+}
+.warning-box{
+  background:rgba(255,255,0,.1);border:3px dashed var(--gold);
+  border-radius:10px;padding:12px 16px;margin-bottom:10px;
+  text-align:left;
+}
+.warning-box .wb-title{
+  font-family:'Press Start 2P',monospace;font-size:.55rem;
+  color:var(--gold);margin-bottom:8px;
+}
+.warning-box ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.warning-box ul li{
+  font-family:'Kalam',cursive;font-size:.9rem;color:#fff;
+  display:flex;align-items:flex-start;gap:8px;line-height:1.3;
+}
+.sexuality-card{
+  background:linear-gradient(135deg,rgba(255,20,147,.2),rgba(148,0,211,.2));
+  border:2px solid rgba(255,20,147,.5);border-radius:10px;
+  padding:12px 16px;margin-bottom:10px;text-align:left;
+}
+.sc-title{
+  font-family:'Press Start 2P',monospace;font-size:.55rem;
+  color:var(--pk);margin-bottom:6px;
+}
+.sc-text{font-family:'Kalam',cursive;font-size:.9rem;color:#fff;line-height:1.4;}
+.dhoka-alert{
+  background:var(--red);border-radius:10px;padding:12px 16px;
+  text-align:left;
+}
+.da-title{
+  font-family:'Press Start 2P',monospace;font-size:.55rem;
+  color:#fff;margin-bottom:6px;
+}
+.da-text{font-family:'Kalam',cursive;font-size:.9rem;color:#fff;line-height:1.4;}
+
+/* ── SLIDE 7: Checkout ── */
+#slide7{background:linear-gradient(160deg,#e8f5e9,#fff8e1,#fce4ec);}
+.checkout-wrapper{max-width:540px;width:100%;}
+.checkout-heading{
+  font-family:'Press Start 2P',monospace;font-size:clamp(.5rem,1.8vw,.8rem);
+  color:var(--red);margin-bottom:12px;
+}
+.cart-summary{
+  background:#fff;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,.1);
+  overflow:hidden;margin-bottom:10px;
+}
+.cart-item{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-bottom:1px solid #f0f0f0;
+}
+.cart-item-img{font-size:2.5rem;}
+.cart-item-info{flex:1;text-align:left;}
+.cart-item-name{font-family:'Kalam',cursive;font-size:.9rem;font-weight:700;color:#111;}
+.cart-item-sub{font-family:'Kalam',cursive;font-size:.75rem;color:#777;}
+.cart-item-price{font-family:'Press Start 2P',monospace;font-size:.6rem;color:var(--red);}
+.cart-total{
+  padding:12px 14px;display:flex;justify-content:space-between;
+  background:#f9f9f9;
+}
+.ct-label{font-family:'Kalam',cursive;font-size:1rem;font-weight:700;color:#111;}
+.ct-val{font-family:'Press Start 2P',monospace;font-size:.75rem;color:var(--grn);}
+.promo-box{
+  background:#fff;border-radius:10px;padding:10px 14px;
+  display:flex;gap:8px;align-items:center;margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+.promo-input{
+  flex:1;border:2px dashed #ccc;border-radius:6px;padding:6px 10px;
+  font-family:'Kalam',cursive;font-size:.9rem;outline:none;
+}
+.promo-apply{
+  background:var(--org);color:#fff;border:none;border-radius:6px;
+  padding:7px 14px;font-family:'Press Start 2P',monospace;font-size:.45rem;
+  cursor:pointer;
+}
+.checkout-btn{
+  width:100%;background:linear-gradient(135deg,var(--grn),#00695c);
+  color:#fff;border:none;border-radius:8px;padding:14px;
+  font-family:'Press Start 2P',monospace;font-size:clamp(.45rem,1.5vw,.7rem);
+  cursor:pointer;box-shadow:0 4px 15px rgba(0,200,83,.4);
+  animation:btnPulse .7s infinite alternate;
+}
+@keyframes btnPulse{from{box-shadow:0 4px 15px rgba(0,200,83,.4);}to{box-shadow:0 4px 30px rgba(0,200,83,.9);}}
+.checkout-btn:hover{transform:translateY(-2px);}
+.no-return-big{
+  font-family:'Press Start 2P',monospace;font-size:.5rem;
+  color:var(--red);background:#ffebee;border:2px dashed var(--red);
+  border-radius:8px;padding:8px 12px;margin-top:8px;
+  text-align:center;
+}
+
+/* ── NAV ── */
+.nav-area{
+  position:fixed;bottom:12px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:10px;z-index:100;
+  background:rgba(0,0,0,.5);padding:8px 16px;
+  border-radius:50px;backdrop-filter:blur(12px);
+}
+.nav-btn{
+  background:var(--gold);color:#000;border:2px solid #000;
+  border-radius:50px;padding:6px 16px;
+  font-family:'Press Start 2P',monospace;font-size:.5rem;
+  cursor:pointer;box-shadow:2px 2px 0 #000;transition:all .1s;
+}
+.nav-btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #000;}
+.nav-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 #000;}
+.slide-counter{
+  font-family:'Press Start 2P',monospace;font-size:.5rem;color:#fff;
+  min-width:60px;text-align:center;
+}
+.dots{display:flex;gap:6px;}
+.dot{
+  width:10px;height:10px;border-radius:50%;
+  background:rgba(255,255,255,.3);border:1.5px solid #fff;
+  cursor:pointer;transition:all .3s;
+}
+.dot.active{background:var(--gold);transform:scale(1.3);}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);
+  z-index:1000;align-items:center;justify-content:center;
+}
+.modal-overlay.show{display:flex;}
+.modal-box{
+  background:#fff;border:4px solid var(--pk);border-radius:16px;
+  padding:28px;max-width:380px;width:90%;
+  box-shadow:10px 10px 0 var(--pk);text-align:center;
+  animation:popIn .4s cubic-bezier(.68,-.55,.27,1.55);
+}
+@keyframes popIn{from{transform:scale(0) rotate(-10deg);}to{transform:scale(1) rotate(0);}}
+.modal-emoji{font-size:4rem;display:block;margin-bottom:8px;}
+.modal-title{
+  font-family:'Press Start 2P',monospace;font-size:.75rem;
+  color:var(--pk);margin-bottom:12px;
+}
+.modal-text{font-family:'Kalam',cursive;font-size:1.05rem;color:#333;margin-bottom:16px;line-height:1.5;}
+.modal-close{
+  background:var(--red);color:#fff;border:none;border-radius:30px;
+  padding:10px 24px;font-family:'Press Start 2P',monospace;font-size:.55rem;
+  cursor:pointer;box-shadow:3px 3px 0 #000;
+}
+
+/* promo toast */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#333;color:#fff;font-family:'Kalam',cursive;font-size:1rem;
+  padding:10px 20px;border-radius:30px;z-index:500;
+  opacity:0;transition:all .4s;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="floaties" id="floaties"></div>
+
+<!-- TOP NAVBAR -->
+<div class="topbar">
+  <div class="topbar-row1">
+    <div class="logo">Dhoka<span>Kart</span>™ <span style="font-size:.4rem;color:rgba(255,255,255,.6)">feat. Angel Ji 😇</span></div>
+    <div class="search-bar">
+      <input type="text" placeholder="🔍 Rishta dhundho...  Toh apni taqdeer ko hi search karo 💀" readonly>
+      <button>🔍</button>
+    </div>
+    <div class="topbar-badges">
+      <div class="tbadge">🔥 HOT DEAL</div>
+      <div class="tbadge grn">✅ GENUINE</div>
+      <div class="tbadge gold">⚠️ RISKY</div>
+    </div>
+  </div>
+  <div class="ticker-wrap">
+    <div class="ticker-inner">
+      🚨 LIMITED STOCK: Sirf 1 Angel bacha hai! | NO RETURN POLICY — bilkul nahi, sorry | FREE DELIVERY with "Bahut Saari Taareef" coupon code | ⚠️ Manufacturer disclaims all liability for hearing loss, food poisoning, emotional damage, or existential crisis | 😇 "Angel" — Naam sunke mat ghabhrana, product dekh ke samajh jaoge | 🐒 CERTIFIED UNIQUE ITEM — duniya mein sirf ek Angel hai, aur isko wapas karne ka koi option NAHI hai 🚨 &nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
+</div>
+
+<div class="slides-wrapper" id="slidesWrapper">
+
+  <!-- SLIDE 1: Product Page -->
+  <div class="slide active" id="slide1">
+    <div class="product-page">
+      <div class="breadcrumb">DhokaKart &gt; Rishta &gt; Premium Listings &gt; <strong>Angel Ji "Deluxe" 😇🐒</strong></div>
+      <div class="product-card">
+        <div class="oos-ribbon">ALMOST GONE!</div>
+        <div class="prod-img-area">😇🐒</div>
+        <div class="prod-title">Angel Ji™ — "Deluxe" Unboxed Edition</div>
+        <div class="prod-subtitle">"Naam Angel, Kaam Jungle | Pre-Owned by Destiny | Handle With Caution 😇"</div>
+        <div class="stars">★★★☆☆</div>
+        <div class="rating-count">2,847 ratings | "Naam Angel, experience inferno" reviews: 1,204</div>
+        <div class="price-area">
+          <span class="price-main">FREE*</span>
+          <span class="price-og">₹∞ (Original MRP: Your Sanity)</span>
+          <span class="discount-tag">100% OFF (koi nahi le raha tha)</span>
+        </div>
+        <div style="font-family:'Kalam',cursive;font-size:.8rem;color:#c62828;background:#ffebee;padding:6px 10px;border-radius:6px;margin:4px 0;">
+          😇 <strong>"Angel"</strong> — Naam sun ke mat socho ki angel milegi. Ye warning hai, description nahi. 💀
+        </div>
+        <div class="offer-badges">
+          <span class="offer-badge">🏦 NO EMI</span>
+          <span class="offer-badge">🔄 NO RETURN</span>
+          <span class="offer-badge">❓ MYSTERY ITEM</span>
+          <span class="offer-badge">💀 HIGH RISK</span>
+        </div>
+        <div class="delivery-info">🚚 Free Delivery — estimated 1-2 business rishtas | Delivery boy bhi confused hai</div>
+        <div class="no-return">⛔ NO RETURN / NO EXCHANGE — "Jo liya so liya bhai. Teri marzi thi na?" Policy strictly enforced.</div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:10px;">
+          <button class="add-cart-btn" onclick="addToCart()">🛒 ADD TO CART (agar himmat hai)</button>
+          <button class="buy-now-btn" onclick="addToCart()">⚡ BUY NOW (please koi toh lo)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Specifications -->
+  <div class="slide" id="slide2">
+    <div class="specs-container">
+      <div class="spec-heading">📋 ANGEL JI™ — FULL SPECIFICATIONS (Biodata + Warning Sheet)</div>
+      <table class="spec-table">
+        <tr><td>📏 Height</td><td>3 ft 11.99 inch <span class="warning-chip">TINY</span><br><small style="color:#888">Naap ke dekho, hum zimmedaar nahi hain</small></td></tr>
+        <tr><td>🐒 Looks</td><td>Patli Mooch™ + Monkey Aesthetic™<br><small style="color:#888">100% original jungle vibes. No filter needed (ya filter kaam nahi karega)</small></td></tr>
+        <tr><td>🎤 Voice</td><td>Ultra-Shrill™ v9.0 <span class="warning-chip">⚠️ DANGEROUS</span><br><small style="color:#888">Frequency: 9,000+ Hz. Kaan ke parde guaranteed nahi</small></td></tr>
+        <tr><td>💬 Talk Mode</td><td>24/7 AUTO-YAPPING™ <span class="warning-chip">NO MUTE</span><br><small style="color:#888">Pause button: nahi milega. Kabhi bhi. Kisi bhi condition mein.</small></td></tr>
+        <tr><td>👩‍🍳 Cooking</td><td>"Expert" Level <span class="warning-chip">BIOHAZARD</span><br><small style="color:#888">Output may be: raw, burnt, unidentified, or classified</small></td></tr>
+        <tr><td>🫏 Animal Mode</td><td>Monkey Mode + Donkey Mode <span class="warning-chip">UNPREDICTABLE</span><br><small style="color:#888">Switches randomly. No warning. No explanation.</small></td></tr>
+        <tr><td>🍽️ Diet</td><td>OMNIVORE PRO™ <span class="warning-chip">EXTREME</span><br><small style="color:#888">Kuch bhi kha sakti hain. LITERALLY. Kuch bhi.</small></td></tr>
+        <tr><td>🤥 Trust Level</td><td>DHOKA POSSIBLE™ <span class="warning-chip">VERIFY</span><br><small style="color:#888">Terms & conditions apply. Emotions not included.</small></td></tr>
+        <tr><td>🌈 Orientation</td><td>TBD / Surprise <span class="warning-chip">MYSTERY</span><br><small style="color:#888">May or may not be interested in you specifically. Or gender in general.</small></td></tr>
+        <tr><td>💰 Salary</td><td>Taareef Only™ <br><small style="color:#888">Cash nahi chalega. Sirf compliments. Minimum 3/day.</small></td></tr>
+      </table>
+      <div class="spec-footer">⚠️ *"Angel" is a brand name only. No actual angelic properties included. Sold as-is. God bhi hairan hai ke yeh naam kaise mila. 😇💀</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Features -->
+  <div class="slide" id="slide3">
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(.5rem,1.8vw,.8rem);color:#4a148c;margin-bottom:12px;max-width:560px;width:100%;">
+      ✨ KEY FEATURES & IN-BOX CONTENTS ✨
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🍳</span>
+        <div class="feature-name">BIOHAZARD CHEF™</div>
+        <div class="feature-desc">Khana banayegi zaroor. Khane layak hoga ya nahi — 50/50 chance. Stomach pump ready rakhna 🧪</div>
+        <span class="feature-badge warn">RISKY</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💪</span>
+        <div class="feature-name">FREE LABOUR™</div>
+        <div class="feature-desc">Jhaadu, pocha, bartan, dusting — sab karti hai. Payment: sirf "wah kya kaam kiya" bolna padega 🙏</div>
+        <span class="feature-badge">FREE</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🐒</span>
+        <div class="feature-name">DUAL ANIMAL MODE™</div>
+        <div class="feature-desc">Kabhi monkey mode (trees pe jump), kabhi donkey mode (stubborn AF). Mode change unpredictable 🌀</div>
+        <span class="feature-badge bug">BUG</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🗣️</span>
+        <div class="feature-name">INFINITE YAPPER™</div>
+        <div class="feature-desc">Battery kabhi khatam nahi hogi. Neend mein bhi bakwaas chalti hai reportedly 😵‍💫</div>
+        <span class="feature-badge bug">WARNING</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🍕</span>
+        <div class="feature-name">GARBAGE DISPOSAL™</div>
+        <div class="feature-desc">Kuch bhi kha sakti hain. Khana, non-khana, questionable cheezein — sab ek hi rate 😳</div>
+        <span class="feature-badge warn">EXTREME</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">😴</span>
+        <div class="feature-name">WEIRD HABITS DLC™</div>
+        <div class="feature-desc">Khaana sunghti hai pehle 🐕, raat ko random bolti hai, ek hi joke 47 baar sunati hai 💀</div>
+        <span class="feature-badge bug">BUG</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Animal Mode / Weird Habits -->
+  <div class="slide" id="slide4">
+    <div class="habits-wrapper">
+      <div class="habit-heading">🐾 ANIMAL MODE DOCUMENTATION 🐾<br><span style="color:rgba(255,255,255,.6);font-size:.8em">Officially logged by survivors</span></div>
+      <div class="animal-mode-banner">⚠️ ACTIVE MODES DETECTED: 🐒 MONKEY | 🫏 DONKEY | 🐄 COW | 🐓 MURGA | 🐈 BILLI | 🦜 TOTA</div>
+      <div class="habit-list">
+        <div class="habit-item">
+          <span class="hi">🐒</span>
+          <div class="ht"><strong>Monkey Mode:</strong> Kabhi bhi activate ho sakta hai. Trees par nahi chadhti (abhi tak), lekin furniture pe? Confirmed. "Jungle mein rehna chahiye tha inhe" — neighbour, 2023</div>
+        </div>
+        <div class="habit-item">
+          <span class="hi">🫏</span>
+          <div class="ht"><strong>Donkey Mode:</strong> Ek baar mind ban gaya toh koi nahi hila sakta. Stubbornness level: 9000. Donkey bhi isse dekh ke resign kar de 🫏</div>
+        </div>
+        <div class="habit-item">
+          <span class="hi">🔊</span>
+          <div class="ht"><strong>Multi-Animal Sound System™:</strong> Ek hi din mein cow ki aawaaz, billi ki mew, murge ki bang, aur tote ki nakal — sab ek package mein. Neighbours bhi confuse hain.</div>
+        </div>
+        <div class="habit-item">
+          <span class="hi">😴</span>
+          <div class="ht"><strong>Weird Sleep Habits:</strong> Neend mein debate karti hain. Kisi anjaan se. Aur usually jeetti hain. Darr lagta hai.</div>
+        </div>
+        <div class="habit-item">
+          <span class="hi">🍽️</span>
+          <div class="ht"><strong>Eat Anything Mode:</strong> Mirchi ko candy samajhti hain. Puri thaali ek minute mein. Nutritionist ne haath khad kar diye.</div>
+        </div>
+      </div>
+      <div class="sound-board">
+        <div class="sound-title">🎵 VIRTUAL SOUND BOARD (click to experience)</div>
+        <div class="sound-btns">
+          <button class="sound-btn" onclick="showSoundToast('🐒 OOH OOH AAH AAH!')">🐒 Monkey Mode</button>
+          <button class="sound-btn" onclick="showSoundToast('🫏 HEE HAW HEE HAW!')">🫏 Donkey Mode</button>
+          <button class="sound-btn" onclick="showSoundToast('🐄 MOOOOOO! (sabzi mandi mein bhi suni gayi)')">🐄 Cow Mode</button>
+          <button class="sound-btn" onclick="showSoundToast('🐓 KOO KOO KOOOOO! (3am ko)')">🐓 Murga Mode</button>
+          <button class="sound-btn" onclick="showSoundToast('🦜 SQUAWK! Kya bolti hain? Kuch bhi! SQUAWK!')">🦜 Tota Mode</button>
+          <button class="sound-btn" onclick="showSoundToast('🗣️ [YAPPING INTENSIFIES — 47min non stop]')">🗣️ Full Yap Mode</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Reviews & Memes -->
+  <div class="slide" id="slide5">
+    <div class="reviews-wrapper">
+      <div class="reviews-heading">⭐ ANGEL JI™ — CUSTOMER REVIEWS ⭐<br><span style="color:rgba(255,215,0,.6);font-size:.8em">Verified Purchasers (all traumatised 😇)</span></div>
+      <div class="review-card">
+        <div class="reviewer">
+          <span class="reviewer-avatar">🧔</span>
+          <div>
+            <div class="reviewer-name">Rahul_K_2024 ✅ Verified Victim</div>
+            <div class="reviewer-stars">★★☆☆☆</div>
+          </div>
+        </div>
+        <div class="review-text">"Angel naam suna toh socha sach mein angel milegi 😇. Khana khaya, ambulance bulani padi. 2 stars isliye diye kyunki ghar saaf tha. Kaan ke parde alag story hain. NO RETURN POLICY ne zindagi barbad ki. Angel naam ka koi lena dena nahi tha product se." 😭</div>
+        <div class="review-helpful">847 log ise helpful maante hain</div>
+      </div>
+      <div class="review-card">
+        <div class="reviewer">
+          <span class="reviewer-avatar">🧑</span>
+          <div>
+            <div class="reviewer-name">AnonymousBhai_99 ⚠️ Survived</div>
+            <div class="reviewer-stars">★★★☆☆</div>
+          </div>
+        </div>
+        <div class="review-text">"Pehle din monkey mode dekha, doosre din donkey mode. Teesre din baat karni band kar di. Aawaz sun ke abhi bhi PTSD hota hai. But ghar bohot saaf tha, so... mixed feelings."</div>
+        <div class="review-helpful">1,203 log ise helpful maante hain</div>
+      </div>
+      <div class="review-card">
+        <div class="reviewer">
+          <span class="reviewer-avatar">👩</span>
+          <div>
+            <div class="reviewer-name">Priya_mystery_2025 🌈 Plot Twist</div>
+            <div class="reviewer-stars">★★★★★</div>
+          </div>
+        </div>
+        <div class="review-text">"Mujhe product pasand aaya 😏. But yeh review sirf ladkiyon ke liye hai. Baaki sab ko honestly bohot acha nahi laga. Aap sab ke liye 1 star. Mere liye 5 🌹" — Priya ji</div>
+        <div class="review-helpful">🌈 3,456 people found this... interesting</div>
+      </div>
+      <div class="meme-strip">
+        <div class="meme-card">
+          <div class="meme-top">EXPECTATIONS:</div>
+          <span class="meme-emoji">👰</span>
+          <div class="meme-bottom">Dulhan mil gayi!</div>
+        </div>
+        <div class="meme-card" style="border-color:var(--pk);">
+          <div class="meme-top">REALITY:</div>
+          <span class="meme-emoji">🐒☠️🔊</span>
+          <div class="meme-bottom">Bhaago bhai bhaago 😭</div>
+        </div>
+        <div class="meme-card" style="border-color:var(--gold);">
+          <div class="meme-top">HEIGHT:</div>
+          <span class="meme-emoji">📏🤏</span>
+          <div class="meme-bottom">Upar se nahi dikh rahi 💀</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: T&C / Warnings -->
+  <div class="slide" id="slide6">
+    <div class="tnc-wrapper">
+      <div class="tnc-heading">⚠️ TERMS, CONDITIONS & HAZARD WARNINGS ⚠️</div>
+      <div class="warning-box">
+        <div class="wb-title">🚫 DHOKA ALERT — READ CAREFULLY</div>
+        <ul>
+          <li>🤥 <span>Dhoka de sakti hai — emotionally, financially, or just randomly on a Tuesday. "Kya pata kal kaisi lage?" — Official company policy</span></li>
+          <li>🏃 <span>Bhaagna allowed nahi hai. No return policy strictly enforced by universe.</span></li>
+          <li>🎭 <span>Jo dikha wo real nahi tha. Jo real hai wo abhi dikha nahi. Surprise awaits.</span></li>
+          <li>🃏 <span>Wild card personality. Aaj masti, kal war. Same person. Different day.</span></li>
+        </ul>
+      </div>
+      <div class="sexuality-card">
+        <div class="sc-title">🌈 ORIENTATION: UNDEFINED / MYSTERY BOX</div>
+        <div class="sc-text">
+          Hum confirm nahi kar sakte ke aap ke liye interest hai ya nahi. May or may not be lesbian. May or may not be interested in you. May be interested in your behen. <strong>Surprise included at no extra charge.</strong> Priya wali review dobara padho. 😏<br>
+          <small style="color:rgba(255,255,255,.5);">*DhokaKart accepts no responsibility for heartbreak, confusion, or existential crisis arising from orientation discovery.</small>
+        </div>
+      </div>
+      <div class="dhoka-alert">
+        <div class="da-title">🚨 FINAL WARNING FROM CEO OF DHOKAKART 🚨</div>
+        <div class="da-text">
+          Hamare products ke baare mein humara kehna hai: <strong>"Jo liya so liya."</strong> Koi wapasi nahi. Koi refund nahi. Koi replacement nahi. Koi helpline nahi. Helpline wale bhi isse sun ke bhaag gaye. Proceed with full awareness. Bhagwaan tumhare saath ho. 🙏
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Checkout -->
+  <div class="slide" id="slide7">
+    <div class="checkout-wrapper">
+      <div class="checkout-heading">🛒 ANGEL JI™ CHECKOUT 😇🛒</div>
+      <div class="cart-summary">
+        <div class="cart-item">
+          <span class="cart-item-img">🐒</span>
+          <div class="cart-item-info">
+            <div class="cart-item-name">Angel Ji™ — "Deluxe" Unboxed Edition 😇🐒</div>
+            <div class="cart-item-sub">Color: Mooch Brown | Size: XS (3ft 11in) | Qty: 1 (only 1 available)</div>
+            <div style="font-family:'Kalam',cursive;font-size:.7rem;color:var(--red);">⚠️ Non-returnable | Hazardous Item | High Maintenance</div>
+          </div>
+          <span class="cart-item-price">FREE*<br><small style="color:#aaa;font-size:.4rem;">*sanity extra</small></span>
+        </div>
+        <div class="cart-item" style="background:#fff8e1;">
+          <span class="cart-item-img">🎁</span>
+          <div class="cart-item-info">
+            <div class="cart-item-name">FREE Gift: Complimentary Ear Damage 🎁</div>
+            <div class="cart-item-sub">Included automatically. No opt-out.</div>
+          </div>
+          <span class="cart-item-price">FREE<br><small style="color:#aaa;font-size:.4rem;">unwanted</small></span>
+        </div>
+        <div class="cart-item" style="background:#ffebee;">
+          <span class="cart-item-img">☠️</span>
+          <div class="cart-item-info">
+            <div class="cart-item-name">Bonus: One Mystery Dhoka Coupon</div>
+            <div class="cart-item-sub">Redeemable: Anytime. Without warning. ✨</div>
+          </div>
+          <span class="cart-item-price">PRICELESS</span>
+        </div>
+        <div class="cart-total">
+          <span class="ct-label">Total (incl. trauma):</span>
+          <span class="ct-val">₹0 + Your Life™</span>
+        </div>
+      </div>
+      <div class="promo-box">
+        <input class="promo-input" type="text" placeholder="🏷️ Promo code? Try: NOLOVE, BHAAGO, KHUDKARO...">
+        <button class="promo-apply" onclick="applyPromo()">APPLY</button>
+      </div>
+      <button class="checkout-btn" onclick="showModal()">
+        💍 PLACE ORDER — RISHTA CONFIRM KARO<br>
+        <span style="font-size:.5em;opacity:.8;">(Pachtana guaranteed. Phir bhi proceed karo.)</span>
+      </button>
+      <div class="no-return-big">
+        🚫 NO RETURN | NO REFUND | NO ESCAPE<br>
+        <span style="font-size:.8em">DhokaKart Return Policy: "Beta, yeh zindagi hai, Amazon nahi."</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-area">
+  <button class="nav-btn" onclick="changeSlide(-1)">◀ BACK</button>
+  <div class="dots" id="dotContainer"></div>
+  <div class="slide-counter" id="slideCounter">1 / 7</div>
+  <button class="nav-btn" onclick="changeSlide(1)">NEXT ▶</button>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <span class="modal-emoji">🎉🐒💍☠️</span>
+    <div class="modal-title">ORDER CONFIRMED!</div>
+    <div class="modal-text">
+      Aapne order place kar diya! 🎊<br><br>
+      <strong>Order ID: ANGEL-DHOKA-2025-GOOD-LUCK 😇</strong><br><br>
+      Delivery time: Jab tak yapping band ho 🗣️<br>
+      Return: Nahi hoga. Kabhi nahi. Never.<br><br>
+      <em>Pro tip: Kaan ke parde pehle se hi book kar lo. Hearing aid ka EMI shuru karo. Khana khate waqt ambulance ready rakhna.</em> 😂<br><br>
+      <strong>DhokaKart wishes you: Best of luck bhai 🙏</strong>
+    </div>
+    <button class="modal-close" onclick="hideModal()">THIK HAI BHAI 😭</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+let currentSlide = 0;
+const totalSlides = 7;
+const slides = document.querySelectorAll('.slide');
+const dotContainer = document.getElementById('dotContainer');
+const slideCounter = document.getElementById('slideCounter');
+
+for(let i=0;i<totalSlides;i++){
+  const d = document.createElement('div');
+  d.className = 'dot'+(i===0?' active':'');
+  d.onclick = ()=>goToSlide(i);
+  dotContainer.appendChild(d);
+}
+
+function goToSlide(n){
+  slides[currentSlide].classList.remove('active');
+  slides[currentSlide].classList.add('exit-left');
+  setTimeout(()=>slides[currentSlide].classList.remove('exit-left'),500);
+  currentSlide = n;
+  slides[currentSlide].classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===currentSlide));
+  slideCounter.textContent = (currentSlide+1)+' / '+totalSlides;
+}
+
+function changeSlide(dir){
+  let n = currentSlide+dir;
+  if(n<0) n=totalSlides-1;
+  if(n>=totalSlides) n=0;
+  goToSlide(n);
+}
+
+function showModal(){document.getElementById('modalOverlay').classList.add('show');}
+function hideModal(){document.getElementById('modalOverlay').classList.remove('show');}
+
+function addToCart(){
+  showToast('🛒 Added to cart! (wapas nahi kar sakte ab 😈)');
+  setTimeout(()=>goToSlide(6),1200);
+}
+
+function applyPromo(){
+  const input = document.querySelector('.promo-input');
+  const codes = {
+    'NOLOVE':'💔 10% extra loneliness added. Discount: ₹0',
+    'BHAAGO':'🏃 Sorry, no escape route available. Code invalid.',
+    'KHUDKARO':'😂 Valid! But kya karna hai aapko iska? 🤷',
+    'TAAREEF':'🌸 3 compliments credited to your account! She approves.',
+  };
+  const v = (input.value||'').toUpperCase().trim();
+  showToast(codes[v] || '❌ Invalid code. Try: TAAREEF for 3 compliments 🌸');
+}
+
+function showSoundToast(msg){showToast(msg);}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight') changeSlide(1);
+  if(e.key==='ArrowLeft') changeSlide(-1);
+});
+
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{
+  const diff=tx-e.changedTouches[0].clientX;
+  if(Math.abs(diff)>50) changeSlide(diff>0?1:-1);
+});
+
+// Floaties
+const emojis=['💍','🛒','🐒','🌸','🙏','🎊','💌','⭐','🌺','😂','🎶','🫶','🏷️','☠️','🚨','🫏','🐄','🦜'];
+const f=document.getElementById('floaties');
+for(let i=0;i<30;i++){
+  const el=document.createElement('div');
+  el.className='floaty';
+  el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  el.style.cssText=`left:${Math.random()*100}%;font-size:${1+Math.random()*1.5}rem;animation-duration:${7+Math.random()*12}s;animation-delay:${Math.random()*12}s;`;
+  f.appendChild(el);
+}
+</script>
+</body>
+</html>
